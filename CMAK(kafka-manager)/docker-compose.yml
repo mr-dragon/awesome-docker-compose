@@ -1,0 +1,21 @@
+# https://github.com/hleb-albau/kafka-manager-docker
+# https://hub.docker.com/r/hlebalbau/kafka-manager
+# https://cloud.tencent.com/developer/article/1651137
+version: '3.6'
+services:
+  zk:
+    image: zookeeper:latest
+    container_name: zookeeper
+    restart: always
+    environment:
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
+  # docker run -d -eZK_HOSTS=0.0.0.0:2181 --name kafka-manager kafkamanager/kafka-manager
+  cmak:
+    image: hlebalbau/kafka-manager:latest
+    # image: kafkamanager/kafka-manager
+    container_name: kafka-manager
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: "zk:2181"
