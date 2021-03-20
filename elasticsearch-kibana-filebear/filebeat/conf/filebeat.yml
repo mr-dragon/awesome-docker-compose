@@ -1,0 +1,18 @@
+# 日志输入配置
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+  # 需要收集的日志所在的位置，可使用通配符进行配置
+  - /var/log/*.log
+
+output.elasticsearch:
+  hosts: ["es7_01:9200"]    #定义的es的url，之前名字取为es7_01，需要保持一致，不能使用localhost
+  #hosts: ${ELASTICSEARCH_HOSTS:es7_01:9200}    #定义的es的url，之前名字取为es7_01，需要保持一致，不能使用localhost
+  #username: '${ELASTICSEARCH_USERNAME:}'
+  #password: '${ELASTICSEARCH_PASSWORD:}'
+  
+#日志输出配置(采用 logstash 收集日志，5044为logstash端口)
+#output.logstash:
+  #hosts: ["10.103.131.242:5044"]
+  #hosts: ["es7_01:5044"]

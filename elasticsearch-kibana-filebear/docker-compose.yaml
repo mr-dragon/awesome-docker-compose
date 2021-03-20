@@ -1,0 +1,61 @@
+version: '2.2'
+services:
+  cerebro:
+    image: lmenezes/cerebro:0.9.3
+    container_name: cerebro
+    ports:
+      - "9000:9000"
+    command:
+      - -Dhosts.0.host=http://elasticsearch:9200
+  elasticsearch: #服务名称（不是容器名）
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
+    container_name: es7_01 #容器名称
+    environment:
+      - cluster.name=sage_es  #配置es集群名称
+      - node.name=es7_01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" #配置es启动参数
+      - discovery.seed_hosts=es7_01
+      #- discovery.type=single-node #配置es启动单节点
+      - cluster.initial_master_nodes=es7_01 #,es7_02
+      - path.data:/data/elasticsearch
+      - path.logs:/data/log/elasticsearch
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es7data1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200 #暴露的端口信息和docker run -d -p 80:80 一样
+    restart: "no"
+    #restart: "always" #重启策略，能够使服务保持始终运行，生产环境推荐使用
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.11.1
+    container_name: kibana7
+    environment:
+      - I18N_LOCALE=zh-CN
+      - XPACK_GRAPH_ENABLED=true
+      - TIMELION_ENABLED=true
+      - XPACK_MONITORING_COLLECTION_ENABLED="true"
+    ports:
+      - "5601:5601"
+  filebeat:
+    container_name: filebeat7
+    hostname: filebeat
+    image: docker.elastic.co/beats/filebeat:7.11.1
+    restart: always
+    user: root
+    links:  # 需要链接es，不然存在报错(容器关联,es01是别名)
+      - elasticsearch:es01
+    volumes:
+      - ./filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      # 映射到容器中[作为数据源]
+      - ./filebeat/logs:/usr/share/filebeat/logs
+      - ./filebeat/data:/usr/share/filebeat/data
+
+volumes:
+  es7data1:
+    driver: local
+  es7data2:
+    driver: local
