@@ -1,0 +1,28 @@
+version: '2'
+services:
+  #redis容器
+  redis:
+    #定义主机名
+    #hostname: myredis
+    #使用的镜像
+    image: redis
+    container_name: redis
+    #容器的映射端口
+    ports:
+      - 6379:6379
+    restart: always
+    #定义挂载点
+    volumes:
+      - ./redis/redis.conf:/etc/redis/redis.conf
+      - ./redis/data:/data
+    #环境变量
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    command: redis-server /etc/redis/redis.conf #覆盖容器启动的redis.conf
+
+# docker run -it -p 6379:6379 --name redis --network=mynetwork \
+# -v ./redis/redis.conf:/etc/redis/redis.conf \
+# -v ./redis/data:/data \
+# -d redis redis-server /etc/redis/redis.conf \
+# --appendonly yes --requirepass "123456"

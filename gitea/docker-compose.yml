@@ -20,3 +20,4 @@ services:
       - MYSQL_PASSWORD=123456
     volumes:
       - ./db/:/var/lib/mysql
+#docker run --name gitea -e USER_UID=1000 -e USER_GID=1000 -e APP_NAME=SageGitea -v $PWD/data:/data -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro -d --network mariadb_mynetwork -p 3000:3000 -p 22:22 gitea/gitea
