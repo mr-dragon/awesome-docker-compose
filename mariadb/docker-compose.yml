@@ -14,7 +14,7 @@ services:
     container_name: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 13306:8080
 # docker-compose -f stack.yml up
 # http://localhost:8080
 # docker run --name mariadb -e MYSQL_ROOT_PASSWORD=123456 --network mynetwork --restart always -d -p 3306:3306 mariadb
