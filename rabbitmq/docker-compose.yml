@@ -1,0 +1,22 @@
+# https://hub.docker.com/_/rabbitmq?tab=tags
+# docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3
+# RabbitMQ container listening on the default port of 5672. If you give that a minute, then do docker logs some-rabbit
+version: '3'
+services:
+  rabbitmq1:
+    image: rabbitmq:3.9.20-management
+    container_name: rabbitmq1
+    restart: always
+    hostname: rabbitmq1
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./data:/var/lib/rabbitmq
+      - ./config/rabbitmq.sh:/etc/rabbitmq/rabbitmq.sh
+      # 注意：在挂载参数中，必须加上“- ./hosts:/etc/hosts”，否则集群无法成功会报“Error: unable TO perform an operation ON node 'rabbit@rabbitmq1'. Please see diagnostics information AND suggestions below.”
+      #- ./hosts:/etc/hosts
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_ERLANG_COOKIE=thisisacookie

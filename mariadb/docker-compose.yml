@@ -1,7 +1,7 @@
 # Use root/example as user/password credentials https://hub.docker.com/_/mariadb/
 version: '3.1'
 services:
-  db:
+  mariadb:
     image: mariadb
     container_name: mariadb
     ports:
@@ -9,12 +9,12 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 123456
-  adminer:
-    image: adminer
-    container_name: adminer
-    restart: always
-    ports:
-      - 13306:8080
+  #adminer:
+  #  image: adminer
+  #  container_name: adminer
+  #  restart: always
+  #  ports:
+  #    - 13306:8080
 # docker-compose -f stack.yml up
 # http://localhost:8080
 # docker run --name mariadb -e MYSQL_ROOT_PASSWORD=123456 --network mynetwork --restart always -d -p 3306:3306 mariadb
