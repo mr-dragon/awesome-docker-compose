@@ -1,0 +1,31 @@
+# https://hub.docker.com/r/cloudnas/clouddrive
+# docker run -d \
+#       --name clouddrive \
+#       --restart unless-stopped \
+#       -v <path to accept cloud mounts>:/CloudNAS:shared \
+#       -v <path to app data>:/Config \
+#       -v <other local shared path>:/media:shared \
+#       --network host \
+#       --pid host \
+#      --privileged \
+#      --device /dev/fuse:/dev/fuse \
+#      cloudnas/clouddrive
+version: "2.1"
+services:
+  cloudnas:
+    image: cloudnas/clouddrive
+    container_name: clouddrive
+    volumes:
+      - <path to accept cloud mounts>:/CloudNAS:shared
+      - <path to app data>:/Config
+      - <other local shared path>:/media:shared #optional media path of host
+    devices:
+      - /dev/fuse:/dev/fuse
+    restart: unless-stopped
+    pid: "host"
+    privileged: true #or you can try capp_add -SYS_ADMIN
+    #cap_add: #SYS_ADMIN cap may fail on some OSes, use privileged: true instead
+    # - SYS_ADMIN
+    network_mode: "host" #if network_mode doesn't work, use port mapping
+    #ports:
+    #   - 9798:9798
