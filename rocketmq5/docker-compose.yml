@@ -1,0 +1,77 @@
+# https://github.com/apache/rocketmq-docker#a-generate-a-rocketmq-docker-image
+# https://hub.docker.com/r/apache/rocketmq
+version: "3.0"
+services:
+    namesrv:
+        image: candice0630/rocketmq:5.0.0-alpine
+        container_name: rocketmqNameServer
+        #restart: always
+        volumes:
+            #挂载路径，冒号左边为服务器本地路径，冒号右边为容器内部路径
+            - ./nameServer/logs:/root/logs
+            - ./nameServer/store:/root/store
+            - ./mq/bin/runserver.sh:/home/rocketmq/rocketmq-5.0.0/bin/runserver.sh
+            - ./mq/bin/runbroker.sh:/home/rocketmq/rocketmq-5.0.0/bin/runbroker.sh
+            - ./mq/bin/tools.sh:/home/rocketmq/rocketmq-5.0.0/bin/tools.sh
+ 
+        environment:
+          - MEM_XMS=500m
+          - MEM_XMX=500m
+          - MEM_XMN=256m
+            #MAX_POSSIBLE_HEAP: 100000000
+        command:
+            #服务启动
+            sh mqnamesrv 
+        #platform: linux/amd64
+        ports: 
+            - "9876:9876"
+ 
+    rocketmqBroker:
+        image: candice0630/rocketmq:5.0.0-alpine
+        container_name: rocketmqBroker
+        #restart: always
+        volumes:
+            #挂载路径，冒号左边为服务器本地路径，冒号右边为容器内部路径
+            - ./broker/logs:/root/logs
+            - ./broker/store:/root/store
+            - ./conf/broker.conf:/home/rocketmq/rocketmq-5.0.0/conf/broker.conf
+            - ./mq/bin/runserver.sh:/home/rocketmq/rocketmq-5.0.0/bin/runserver.sh
+            - ./mq/bin/runbroker.sh:/home/rocketmq/rocketmq-5.0.0/bin/runbroker.sh
+            - ./mq/bin/tools.sh:/home/rocketmq/rocketmq-5.0.0/bin/tools.sh
+ 
+        depends_on:
+            - namesrv
+        
+        environment:
+          - MEM_XMS=500m
+          - MEM_XMX=500m
+          - MEM_XMN=256m
+          - NAMESRV_ADDR:namesrv:9876
+          - BROKER_ID=0
+          - BROKER_ROLE=ASYNC_MASTER
+          - FLUSH_DISK_TYPE=ASYNC_FLUSH
+            #MAX_POSSIBLE_HEAP: 200000000
+        command:
+            # 服务启动
+            sh mqbroker -n namesrv:9876 -c /home/rocketmq/rocketmq-5.0.0/conf/broker.conf
+        #platform: linux/amd64
+        ports: 
+            - "10909:10909"
+            - "10911:10911"
+            - "10912:10912"
+            
+    rocketmqConsole:
+        image: candice0630/rocketmq-console-ng:2.0
+        container_name: rocketmqConsole
+        depends_on:
+            - namesrv
+        environment:
+            JAVA_OPTS: "-Drocketmq.namesrv.addr=namesrv:9876 -Drocketmq.config.isVIPChannel=false -Dcom.rocketmq.sendMessageWithVIPChannel=false"
+        #platform: linux/amd64
+        ports: 
+            - 19876:8080
+
+# docker-compose -f docker-compose.yml up -d
+
+
+      
