@@ -1,3 +1,4 @@
+#https://hub.docker.com/_/redis
 version: '2'
 services:
   #redis容器
@@ -5,7 +6,7 @@ services:
     #定义主机名
     #hostname: myredis
     #使用的镜像
-    image: redis
+    image: redis:6.2
     container_name: redis
     #容器的映射端口
     ports:
