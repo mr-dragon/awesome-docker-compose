@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+    xiaoya-tvbox:
+        image: 'haroldli/xiaoya-tvbox:latest'
+        container_name: xiaoya-tvbox
+        restart: always
+        volumes:
+            - './data:/data'
+        environment:
+            - ALIST_PORT=5344
+        ports:
+            - '5344:80'
+            - '4567:4567'

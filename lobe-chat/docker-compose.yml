@@ -1,0 +1,13 @@
+version: '3'
+# docker run -d -p 3210:3210 -e OPENAI_API_KEY=sk-xxxx -e ACCESS_CODE=lobe66 --name lobe-chat lobehub/lobe-chat
+# 默认映射端口为 3210, 请确保未被占用或手动更改端口映射，使用你的 OpenAI API Key 替换上述命令中的 sk-xxxx
+# https://chat-docs.lobehub.com/zh/self-hosting/platform/docker
+services:
+  kimi-free-api:
+    container_name: lobe-chat
+    image: lobehub/lobe-chat
+    restart: always
+    ports:
+      - "3210:3210"
+    environment:
+      - TZ=Asia/Shanghai
