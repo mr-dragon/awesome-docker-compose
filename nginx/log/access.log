@@ -1,1 +1,0 @@
-172.24.0.1 - - [27/Jun/2022:09:19:05 +0000] "GET /hello.html HTTP/1.1" 200 103 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" "-"
