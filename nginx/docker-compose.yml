@@ -20,3 +20,4 @@ services:
       - LC_ALL=C.UTF-8
     ports:
         - '80:80'
+        - '443:443'
