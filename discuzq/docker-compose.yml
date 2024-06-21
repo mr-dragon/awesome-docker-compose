@@ -1,0 +1,11 @@
+#  docker run --name discuzq -d -p 8082:80 -p 443:443 ccr.ccs.tencentyun.com/discuzq/dzq:latest discuzq
+#  docker exec -it discuzq /bin/bash
+#  grep -rl 'discuz.chat' /var/www/discuz | xargs sed -i 's/discuz.chat/q.discuz.vip/g'
+version: '3.9'
+services:
+  discuzq:
+    image: 'ccr.ccs.tencentyun.com/discuzq/dzq:latest'
+    container_name: discuzq
+    ports:
+      - '8082:80'
+      - '443:443'

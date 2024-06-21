@@ -23,6 +23,9 @@ services:
       start_period: 30s
     secrets:
       - db-password
+    # 数据持久化
+    volumes:
+      - data:/var/lib/mysql
 # 使用的密钥验证，用文件里的文本做密码
 secrets:
   db-password:
