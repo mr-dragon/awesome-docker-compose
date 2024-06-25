@@ -1,0 +1,20 @@
+# https://www.showdoc.com.cn/help/65610
+# docker run -d --name showdoc --user=root  --restart=always --privileged=true -p 4999:80 -v /showdoc_data/html:/var/www/html/ star7th/showdoc
+# docker pull registry.cn-shenzhen.aliyuncs.com/star7th/showdoc
+# docker pull hub.rat.dev/star7th/showdoc:arm-latest
+# docker tag hub.rat.dev/star7th/showdoc:arm-latest star7th/showdoc:arm-latest
+# tag命令以进行重命名 docker tag registry.cn-shenzhen.aliyuncs.com/star7th/showdoc:latest star7th/showdoc:latest 
+# 输入命令启动：docker-compose up -d，部署成功后通过http://IP:4999进行访问，初始账户密码是showdoc/123456
+services:
+  showdoc:
+    container_name: showdoc
+    #image: star7th/showdoc:latest
+    image: star7th/showdoc:arm-latest
+    privileged: true
+    ports:
+        - '4999:80'
+    user: root
+    #restart: always
+    platform: linux/arm64/v8
+    volumes:
+        - './showdoc_data/html:/var/www/html/'

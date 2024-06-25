@@ -1,6 +1,6 @@
 # https://hub.docker.com/_/mysql
 services:
-  db:
+  mysql:
     # 镜像和版本
     image: mysql:8.0.37
     # 容器名称
@@ -25,7 +25,7 @@ services:
       - db-password
     # 数据持久化
     volumes:
-      - data:/var/lib/mysql
+      - ./data:/var/lib/mysql
 # 使用的密钥验证，用文件里的文本做密码
 secrets:
   db-password:
