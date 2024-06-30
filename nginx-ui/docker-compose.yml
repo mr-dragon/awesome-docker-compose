@@ -1,0 +1,18 @@
+# https://nginxui.com/zh_CN/guide/getting-started.html#%E4%BD%BF%E7%94%A8-docker
+# 输入命令启动：docker-compose up -d，部署成功后通过http://IP:18080进行访问，初始账户密码是showdoc/123456
+services:
+  nginx-ui:
+    image: 'uozi/nginx-ui:latest'
+    ports:
+        - '8443:443'
+        - '18080:80'
+    volumes:
+        - '/var/www:/var/www'
+        - '/mnt/user/appdata/nginx-ui:/etc/nginx-ui'
+        - '/mnt/user/appdata/nginx:/etc/nginx'
+    environment:
+        - TZ=Asia/Shanghai
+    restart: always
+    container_name: nginx-ui
+    tty: true
+    stdin_open: true
