@@ -1,0 +1,7 @@
+[webconfig]
+www_root = "./wwwroot"
+http_port = 19798
+https_port = 19799
+webdav_root = "/"
+webdav_readonly = false
+webdav_enable_guest = false
