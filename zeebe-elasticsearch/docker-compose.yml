@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  zeebe:
+    image: camunda/zeebe:latest
+    container_name: zeebe
+    ports:
+      - "26500:26500"
+      - "9600:9600"
+    environment:
+      - ZEEBE_LOG_LEVEL=debug
+
+  operate:
+    image: camunda/operate:latest
+    container_name: operate
+    ports:
+      - "8080:8080"
+    environment:
+      - CAMUNDA_OPERATE_ZEEBE_GATEWAY_ADDRESS=zeebe:26500
+      - CAMUNDA_OPERATE_ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - zeebe
+      - elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.23
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"

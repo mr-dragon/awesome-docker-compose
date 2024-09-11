@@ -1,0 +1,26 @@
+# 你需要在 /config/rclone.conf 中准备一个 rclone 配置文件。 可以手动完成（自己复制），也可以运行下面的内置脚本
+# docker-compose exec <service_name> rclone_setup
+# 在适当的环境变量 RCLONE_REMOTE_PATH 中指定要挂载的 rclone 远程路径，启动并运行容器。在每次启动容器的初始化过程中，它会检查 1） rclone.conf 是否存在；2）验证 RCLONE_REMOTE_PATH 是否确实存在于 rclone.conf 中。 如果有任何问题，请通过以下方式查看容器日志
+services:
+  rclone:
+    container_name: rclone
+    image: wiserain/rclone                      # or ghcr.io/wiserain/rclone
+    restart: always
+    network_mode: "bridge"
+    volumes:
+      - ./config:/config
+      - ./log:/log
+      - ./cache:/cache
+      #- /your/mounting/point:/data:shared
+      #- /local/dir/to/be/merged/with:/local     # Optional: if you have a folder to be mergerfs/unionfs with
+    devices:
+      - /dev/fuse
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    environment:
+      #- PUID=${PUID}
+      #- PGID=${PGID}
+      #- TZ=Asia/Seoul
+      - RCLONE_REMOTE_PATH=115:/opt/115

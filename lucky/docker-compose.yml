@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+    lucky:
+        image: gdy666/lucky
+        volumes:
+            - '/volume2/docker/goodluck:/goodluck'
+        ports:
+            - '16601:16601'
+        restart: always
+        container_name: lucky
